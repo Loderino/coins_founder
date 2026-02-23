@@ -6,6 +6,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "fastapi==0.131.0",
+        "httpx==0.28.1",
         "uvicorn==0.41.0"
     ]
 )
