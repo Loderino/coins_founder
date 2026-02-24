@@ -1,6 +1,16 @@
 import cyrtranslit
 
-def transcript(text: str):
+def transcript(text: str) -> str:
+    """
+    Transcribes given text from Cyrillic to Latin alphabet, replaces some symbols and corrects some words.
+
+    Args:
+        text (str): Text to be transcripted.
+
+    Returns:
+        str: Transcripted text.
+    """
+    """"""
     transcripted = cyrtranslit.to_latin(text, 'ru')
     transcripted = transcripted.replace("'", "")
     transcripted = transcripted.replace("ejn", "eyn")

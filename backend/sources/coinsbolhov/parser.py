@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup as bs4
 from backend.sources.common.parser import HTMLParser
 
 class CoinsBolhovParser(HTMLParser):
+    """HTML Parser for coinsbolhov source."""
     def parse(self, html: str, mint: str) -> dict:
         soup = bs4(html, features="html.parser")
         cards = soup.find_all("div", {"class": "products__item products__item--horizontal"})

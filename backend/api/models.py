@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 
 class CoinInfo(BaseModel):
+    """Request model for sales endpoint."""
     sources: list[str]
     title: str
     country: str
