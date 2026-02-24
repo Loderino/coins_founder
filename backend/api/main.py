@@ -1,7 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from backend.api.routers.v1 import v1_router
+
 app = FastAPI()
+
+app.include_router(v1_router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -10,10 +14,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-@app.get("/sales")
-async def check_for_sales():
-    return {"message": "Hello World"}
 
 if __name__ == "__main__":
     import uvicorn

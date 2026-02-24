@@ -1,0 +1,26 @@
+from backend.utils import transcript
+
+def test_transcript():
+    assert transcript("тест") == "test"
+    assert transcript("Россия") == "Rossiya"
+    assert transcript("США") == "SSHA"
+    assert transcript("ОАЭ") == "OAE"
+    assert transcript("Япония") == "Yaponiya"
+    assert transcript("Бангладеш") == "Bangladesh"
+    assert transcript("Бахрейн") == "Bakhreyn"
+    assert transcript("Греция") == "Gretsiya"
+    assert transcript("Джибути") == "Dzhibuti"
+    assert transcript("Казахстан") == "Kazakhstan"
+    assert transcript("Камбоджа") == "Kambodzha"
+    assert transcript("Китай") == "Kitay"
+    assert transcript("Люксембург") == "Lyuksemburg"
+    assert transcript("Маврикий") == "Mavrikiy"
+    assert transcript("Малайзия") == "Malayziya"
+    assert transcript("Малайя") == "Malayya"
+    assert transcript("Антильские острова") == "Antilskie_ostrova"
+    assert transcript("Багамские острова") == "Bagamskie_ostrova"
+    assert transcript("Восточные Карибы") == "Vostochnye_Kariby"
+    assert transcript("Кабо-Верде") == "Kabo_Verde"
+
+    assert transcript("1 рубль") == "1_rubl"
+    assert transcript("2 рубля") == "2_rublya"
