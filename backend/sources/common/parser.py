@@ -1,3 +1,3 @@
 class HTMLParser:
-    def parse(self, html: str):
+    def parse(self, html: str, mint: str):
         pass

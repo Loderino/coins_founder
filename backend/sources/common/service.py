@@ -8,6 +8,6 @@ class SourceService:
 
     async def get_data(self, coin_info):
         result = await self.requestor.get_html(coin_info)
-        price_data = self.parser.parse(result["html"])
+        price_data = self.parser.parse(result["html"], coin_info.mintmark)
         price_data["url"] = result["url"]
         return price_data
