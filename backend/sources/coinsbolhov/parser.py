@@ -14,13 +14,15 @@ class CoinsBolhovParser(HTMLParser):
                 total=0
             for card in cards:
                 if mint:
-                    if card.find("a", {"class": "products__item-info-title"}).text.endswith(mint):
+                    title = card.find("a", {"class": "products__item-info-title"}).text
+                    if " "+mint+" " in title or title.endswith(" "+mint):
                         total+=1
-                        price = int(card.find("div", {"class": "products__item-info-price"}).text.split()[0])
+                        price = int("".join(card.findAll("div", {"class": "products__item-info-price"})[-1].text.split()[:-1]))
                         prices.append(price)
                 else:
-                    price = int(card.find("div", {"class": "products__item-info-price"}).text.split()[0])
+                    price = int("".join(card.findAll("div", {"class": "products__item-info-price"})[-1].text.split()[:-1]))
                     prices.append(price)
+        if total:
             return {
                 "total_variants": total,
                 "max_price": max(prices),

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numis Helper</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+
+        body {
+            width: 320px;
+            background: linear-gradient(145deg, #f8f5f0 0%, #e8e2d9 100%);
+            padding: 16px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 
+                        0 2px 8px rgba(0, 0, 0, 0.06),
+                        inset 0 1px 2px rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e4f;
+            margin-bottom: 4px;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        h1::before {
+            content: "🪙";
+            font-size: 24px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #5a6d7e;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .section-title span {
+            background: #2c3e4f;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .sources-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .sources-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sources-list::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+
+        .sources-list::-webkit-scrollbar-thumb {
+            background: rgba(44, 62, 79, 0.3);
+            border-radius: 10px;
+        }
+
+        .source-item {
+            background: white;
+            border-radius: 16px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease;
+        }
+
+        .source-item:hover {
+            border-color: rgba(100, 108, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transform: translateY(-1px);
+        }
+
+        .source-checkbox {
+            position: relative;
+            width: 22px;
+            height: 22px;
+        }
+
+        .source-checkbox input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            position: absolute;
+        }
+
+        .source-checkbox label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border: 2px solid #cbd5e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .source-checkbox input:checked + label {
+            background: #2c3e4f;
+            border-color: #2c3e4f;
+        }
+
+        .source-checkbox input:checked + label::after {
+            content: "✓";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .source-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .source-name {
+            font-weight: 500;
+            color: #2c3e4f;
+            font-size: 14px;
+        }
+
+        .source-badge {
+            font-size: 11px;
+            color: #7f8c8d;
+            margin-top: 2px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px 20px;
+            color: #7f8c8d;
+            font-size: 14px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 16px;
+        }
+
+        .loading::after {
+            content: "...";
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: ""; }
+            40% { content: "."; }
+            60% { content: ".."; }
+            80%, 100% { content: "..."; }
+        }
+
+        .footer {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+            color: #2c3e4f;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .btn-primary {
+            background: #2c3e4f;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #34495e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(44, 62, 79, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .status {
+            margin-top: 12px;
+            padding: 8px 12px;
+            background: rgba(46, 204, 113, 0.1);
+            border-radius: 12px;
+            color: #27ae60;
+            font-size: 12px;
+            text-align: center;
+            border: 1px solid rgba(46, 204, 113, 0.2);
+            display: none;
+        }
+
+        .status.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Numis Helper</h1>
+        <div class="subtitle">Data sources for numismatic site</div>
+
+        <div class="section-title">
+            Available sources
+            <span>API</span>
+        </div>
+
+        <div id="sources-container" class="sources-list">
+            <!-- Источники будут загружены через JS -->
+        </div>
+
+        <div class="footer">
+            <button class="btn" id="refresh-btn">⟳ Refresh</button>
+            <button class="btn btn-primary" id="save-btn">Save settings</button>
+        </div>
+
+        <div id="status-message" class="status">
+            Settings saved successfully!
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

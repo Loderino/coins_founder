@@ -11,3 +11,11 @@ async def check_for_sales(coin_info: CoinInfo):
     print(coin_info)
     return await agg.find_coin_sales(coin_info)
     # return {"message": "Hello World"}
+
+@v1_router.get("/sources")
+async def get_sources():
+    return {
+        "sources": [
+            {"id": "coinsbolhov", "link": "https://coinsbolhov.ru/", "icon": "https://coinsbolhov.ru/favicons/favicon-32x32.png", "badge": "API v1"},
+        ]
+    }

@@ -51,21 +51,51 @@ class CoinsBolhovURLMaker(URLMaker):
         Returns:
             str: URL-part (nominal name as it is written on the site).
         """
+
+        normalize_nominals = {
+            "½ доллара": "1_2 доллара",
+            "¼ доллара": "1_4 доллара",
+            "1 дайм": "10 центов",
+            "2½ доллара": "2.5 доллара",
+            "½ копейки": "1 деньга",
+            "1 денежка": "1 деньга",
+            "¼ копейки": "1 полушка",
+            "1 гривенник": "10 копеек"
+        }
         identical_nominals = {
-            "50 центов": "1_2 доллара",
-            "25 центов": "1_4 доллара"
+            "50 центов": ["1_2 доллара"],
+            "1_2 доллара": ["50 центов"],
+            "1_4 доллара": ["25 центов"],
+            "25 центов": ["1_4 доллара"],
+            "1 деньга": ["деньга_v1", "деньга_v2", "деньга_v3", "деньга_v4"],
+            "1 полушка": ["полушка_v1", "полушка_v2"],
+            "1 полуполтинник": ["25 копеек"],
+            "2 копейки": ["2 копейки1"],
+            "1 червонец": ["10 рублей"],
         }
 
-        full_nominal = f"{nominal} {currency}"
-        same_nominal = identical_nominals.get(full_nominal, None)
+        full_nominal = normalize_nominals.get(f"{nominal} {currency}", f"{nominal} {currency}")
+        same_nominals = identical_nominals.get(full_nominal, None)
 
         nominals = {
             "2.5 доллара": "84d85b87758815f2d2faa20bac5dcc58",
             "1_4 доллара": "1f57bf3a1f758ee48fe1b009a04f2a25",
+            "деньга_v1": "0a47df593597a769a086f0b43f9b99a8",
+            "деньга_v2": "83f8a47d24a32ad544fad5406b292cdb",
+            "деньга_v3": "6b4e63412f488b720c69810d1525947d",
+            "деньга_v4": "73af2e93defebf7e332d3a66aa1823c8",
+            "полушка_v1": "d98dc793e794e8d21faad23690cb46a2",
+            "полушка_v2": "ddaadf7115358e0a24363c9fb97783f4",
+            "1 полуполтинник": "a453fa90d1f3f90952706272f5020a93",
+            "1 полтина": "f871a320cf0a75362b78966a648b8617",
+            "1 полтинник": "b426b8844e60796450287e12546d5176",
+            "¼ копейки": "d98dc793e794e8d21faad23690cb46a2",
+            "1 червонец": "64cadb796a0ac9236ffc749332ec39f6"
 
         }
-        if same_nominal:
-            return nominals.get(full_nominal, transcript(full_nominal).lower())+"-or-"+nominals.get(same_nominal, transcript(full_nominal).lower())    
+        if same_nominals:
+            same_nominals.insert(0, full_nominal)
+            return "-or-".join([nominals.get(nominal, transcript(nominal).lower()) for nominal in same_nominals])    
         return nominals.get(full_nominal, transcript(full_nominal).lower())
 
         

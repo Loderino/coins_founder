@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Numis Helper",
+  "version": "1.0.0",
+  "description": "Extension for numismatic site with additional data sources",
+  
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  
+  "host_permissions": [
+    "https://ru.ucoin.net/*",
+    "http://127.0.0.1/*",
+    "http://localhost/*"
+  ],
+  
+  "action": {
+    "default_popup": "popup.html"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["https://ru.ucoin.net/*"],
+      "js": ["content.js"],
+      "run_at": "document_end",
+      "all_frames": true
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
