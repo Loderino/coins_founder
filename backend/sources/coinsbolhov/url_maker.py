@@ -90,8 +90,11 @@ class CoinsBolhovURLMaker(URLMaker):
             "1 полтина": "f871a320cf0a75362b78966a648b8617",
             "1 полтинник": "b426b8844e60796450287e12546d5176",
             "¼ копейки": "d98dc793e794e8d21faad23690cb46a2",
-            "1 червонец": "64cadb796a0ac9236ffc749332ec39f6"
-
+            "1 червонец": "64cadb796a0ac9236ffc749332ec39f6",
+            "2 евроцента": "444138c570576ab767fc7a7c91282051",
+            "5 евроцентов": "01f47ed18120ec1c91be860fe0cea7f7",
+            "10 евроцентов": "8fb22893b43ef0a0fe4c483a8ed8094f",
+            "20 евроцентов": "7c4b57f48663eeeb6c64470140b78f14"
         }
         if same_nominals:
             same_nominals.insert(0, full_nominal)
